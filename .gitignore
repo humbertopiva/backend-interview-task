@@ -1,0 +1,13 @@
+# Node.js
+node_modules/
+.env
+.env.*
+pids
+*.pid
+*.seed
+*.log
+logs/
+
+# Build artifacts
+dist/
+build/
