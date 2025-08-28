@@ -11,10 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
     "dotenv": "^17.2.1",
     "koa": "^3.0.1",
     "koa-bodyparser": "^4.4.1",
-    "koa-router": "^14.0.0"
+    "koa-router": "^14.0.0",
+    "pg": "^8.16.3",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.26"
   },
   "devDependencies": {
     "@types/koa": "^3.0.0",
