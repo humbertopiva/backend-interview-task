@@ -1,6 +1,6 @@
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
-import router from "./routes";
+import authRoutes from "./modules/auth/auth.routes";
 
 const app = new Koa();
 
@@ -8,6 +8,7 @@ const app = new Koa();
 app.use(bodyParser());
 
 // Rotas
-app.use(router.routes()).use(router.allowedMethods());
+app.use(authRoutes.routes());
+app.use(authRoutes.allowedMethods());
 
 export default app;
