@@ -13,10 +13,10 @@ export class AuthController {
     const body = ctx.request.body as AuthDto;
 
     try {
-      const tokens = await this.authService.authenticate(body);
+      const data = await this.authService.authenticate(body);
       ctx.body = {
         message: "Autenticado com sucesso!",
-        tokens,
+        data,
       };
     } catch (error: any) {
       console.error("Erro de autenticação:", error);
