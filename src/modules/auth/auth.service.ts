@@ -1,5 +1,4 @@
 import { CognitoIdentityProviderClient, InitiateAuthCommand, RespondToAuthChallengeCommand } from "@aws-sdk/client-cognito-identity-provider";
-import jwt from "jsonwebtoken";
 
 import { generateSecretHash } from "../../common/helpers/crypto";
 import { UserService } from "../user/user.service";
