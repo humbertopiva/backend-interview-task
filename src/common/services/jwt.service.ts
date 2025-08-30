@@ -51,6 +51,7 @@ export class JwtService {
     return {
       sub: decoded.sub,
       username: decoded.username || decoded["cognito:username"],
+      groups: decoded["cognito:groups"] || [],
     };
   }
 

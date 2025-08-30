@@ -49,7 +49,7 @@ export class AuthService {
     const authResult = data.AuthenticationResult;
 
     if (!authResult || !authResult.IdToken || !authResult.AccessToken) {
-      throw new Error("Tokens não retornados pelo Cognito");
+      throw new Error("Token not returned by Cognito");
     }
 
     const accessClaims = await JwtService.decodeAndVerify(authResult.AccessToken, JwtService.mapAccessClaims);
@@ -58,7 +58,6 @@ export class AuthService {
     const userInfo = {
       username: idClaims.name,
       email: idClaims.email,
-      name: idClaims.name,
       groups: accessClaims["groups"] || [],
     };
 
@@ -66,7 +65,6 @@ export class AuthService {
     
     if(!userExists) {
       await this.userService.create({
-        name: userInfo.name,
         email: userInfo.email,
         role: userInfo.groups.includes('admin') ? 'admin' : 'user',
       });
