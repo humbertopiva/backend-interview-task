@@ -5,7 +5,7 @@ let cognitoClient: Client | null = null;
 export async function getCognitoClient(): Promise<Client> {
   if (cognitoClient) return cognitoClient;
 
-  const cognitoRegion = process.env.COGNITO_REGION!;
+  const cognitoRegion = process.env.AWS_REGION!;
   const userPoolId = process.env.COGNITO_POOL_ID!;
   const clientId = process.env.COGNITO_CLIENT_ID!;
   const clientSecret = process.env.COGNITO_CLIENT_SECRET!;
