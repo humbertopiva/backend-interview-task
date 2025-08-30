@@ -39,7 +39,6 @@ export function jwtAuthMiddleware(allowedRoles: string[] = []) {
 
       await next();
     } catch (err: any) {
-      console.log(err);
       ctx.status = 401;
       ctx.body = { message: "Unauthorized", error: err.message };
     }
