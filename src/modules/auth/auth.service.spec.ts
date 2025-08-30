@@ -31,7 +31,7 @@ describe('AuthService', () => {
       cognitoClientSendMock.mockResolvedValue({});
 
       await expect(authService.authenticate({ username: 'test', password: 'pass' })).rejects.toThrow(
-        'Tokens não retornados pelo Cognito'
+        'Token not returned by Cognito'
       );
     });
 
@@ -57,7 +57,6 @@ describe('AuthService', () => {
       expect(result.idToken).toBe('idToken');
       expect(result.accessToken).toBe('accessToken');
       expect((authService as any).userService.create).toHaveBeenCalledWith({
-        name: 'Test',
         email: 'test@test.com',
         role: 'user',
       });

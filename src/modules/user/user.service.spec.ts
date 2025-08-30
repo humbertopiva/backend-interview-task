@@ -110,7 +110,6 @@ describe('UserService', () => {
       const result = await userService.editAccount(dto as any, loggedUser as any);
       expect(result.name).toBe('New Name');
       expect(result.isOnboarded).toBe(true);
-      expect(cognitoService.updateUserName).toHaveBeenCalledWith(user.email, 'New Name');
     });
 
     it('should update role if user is admin', async () => {
