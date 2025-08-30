@@ -65,7 +65,9 @@ export class UserService {
       throw new Error("User not found");
     }
 
-    if(dto.role !== undefined) {
+    const hasRoleChanged = dto.role !== user.role;
+
+    if(dto.role !== undefined && hasRoleChanged) {
       if(loggedUser.role === "user") {
         throw new Error("Regular users cannot change the role");
       }
