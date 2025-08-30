@@ -15,11 +15,11 @@ export class AuthController {
     try {
       const data = await this.authService.authenticate(body);
       ctx.body = {
-        message: "Autenticado com sucesso!",
+        message: "Successfully authenticated!",
         data,
       };
     } catch (error: any) {
-      console.error("Erro de autenticação:", error);
+      console.error("Authentication error:", error);
       ctx.status = 400;
       ctx.body = { error: error.message || error };
     }

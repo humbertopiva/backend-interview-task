@@ -19,6 +19,16 @@ export class UserService {
     return this.userRepository.find();
   }
 
+  async getSelf(loggedUser: LoggedUser): Promise<User | null> {
+    const user = await this.findOneByEmail(loggedUser.email);
+    
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return user;
+  }
+
   async findOneByEmail(email: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { 
       email,
@@ -32,7 +42,7 @@ export class UserService {
     await validateOrReject(userDto);
 
     if(await this.findOneByEmail(dto.email)){
-      throw new Error('Email já está em uso');
+      throw new Error('Email is already in use');
     }
 
     const user = this.userRepository.create({
@@ -52,12 +62,12 @@ export class UserService {
     const user = await this.findOneByEmail(loggedUser.email);
 
     if (!user) {
-      throw new Error("Usuário não encontrado");
+      throw new Error("User not found");
     }
 
     if(dto.role !== undefined) {
       if(loggedUser.role === "user") {
-        throw new Error("Usuário comum não pode alterar o role");
+        throw new Error("Regular users cannot change the role");
       }
 
       await this.cognitoService.removeUserFromGroup(user.email, user.role);

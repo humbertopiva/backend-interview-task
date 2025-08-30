@@ -29,7 +29,7 @@ export class JwtService {
   // Decodifica header do JWT
   static decodeTokenHeader(token: string): any {
     const decoded = jwt.decode(token, { complete: true });
-    if (!decoded) throw new Error("Token inválido");
+    if (!decoded) throw new Error("Invalid token");
     return decoded;
   }
 
@@ -37,7 +37,7 @@ export class JwtService {
   static async getPemForToken(decodedHeader: any, userPoolId: string, region: string): Promise<string> {
     const pems = await this.getPems(userPoolId, region);
     const pem = pems[decodedHeader.header.kid];
-    if (!pem) throw new Error("Chave não encontrada");
+    if (!pem) throw new Error("Key not found");
     return pem;
   }
 
@@ -69,7 +69,7 @@ export class JwtService {
     const header = JwtService.decodeTokenHeader(token);
     const pem = await JwtService.getPemForToken(header, userPoolId, region);
     const decoded = JwtService.verifyToken(token, pem);
-    // console.log("Decoded token:", decoded);
+    
     return mapClaims(decoded);
   }
 }

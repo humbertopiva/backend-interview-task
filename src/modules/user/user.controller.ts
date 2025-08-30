@@ -18,6 +18,12 @@ export class UserController {
     ctx.body = await this.userService.findAll();
   };
 
+  getSelf = async (ctx: Context) => {
+    const loggedUser = ctx.state.user as LoggedUser;
+
+    ctx.body = await this.userService.getSelf(loggedUser);
+  };
+
   editAccount = async (ctx: Context) => {
     const body = ctx.request.body as EditUserDto;
     const loggedUser = ctx.state.user as LoggedUser;

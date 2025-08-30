@@ -11,12 +11,11 @@ export function jwtAuthMiddleware(allowedRoles: string[] = []) {
   return async (ctx: Context, next: Next) => {
     try {
       const accessToken = JwtService.extractToken(ctx, "authorization");
-      if (!accessToken) ctx.throw(401, "AccessToken não fornecido");
+      if (!accessToken) ctx.throw(401, "AccessToken not provided");
       const accessClaims = await JwtService.decodeAndVerify(accessToken, JwtService.mapAccessClaims);
 
-
       const idToken = JwtService.extractToken(ctx, "x-id-token");
-      if (!idToken) ctx.throw(401, "IdToken não fornecido");
+      if (!idToken) ctx.throw(401, "IdToken not provided");
       const idClaims = await JwtService.decodeAndVerify(idToken, JwtService.mapIdClaims);
 
       const user = { ...accessClaims, ...idClaims };
@@ -24,7 +23,7 @@ export function jwtAuthMiddleware(allowedRoles: string[] = []) {
       const findedUser = await userService.findOneByEmail(user.email);
 
       if(!findedUser) {
-        ctx.throw(401, "Usuário não encontrado");
+        ctx.throw(401, "User not found");
       }
       
       user.role = findedUser.role;
@@ -33,7 +32,7 @@ export function jwtAuthMiddleware(allowedRoles: string[] = []) {
       user.name = findedUser.name;
  
       if (allowedRoles.length && allowedRoles.includes(user.role) === false) {
-        ctx.throw(403, "Acesso negado");
+        ctx.throw(403, "Access denied");
       }
 
       ctx.state.user = user;
@@ -42,7 +41,7 @@ export function jwtAuthMiddleware(allowedRoles: string[] = []) {
     } catch (err: any) {
       console.log(err);
       ctx.status = 401;
-      ctx.body = { message: "Não autorizado", error: err.message };
+      ctx.body = { message: "Unauthorized", error: err.message };
     }
   };
 }
