@@ -51,7 +51,6 @@ export class JwtService {
     return {
       sub: decoded.sub,
       username: decoded.username || decoded["cognito:username"],
-      groups: decoded["cognito:groups"] || [],
     };
   }
 
@@ -59,14 +58,13 @@ export class JwtService {
   static mapIdClaims(decoded: any) {
     return {
       email: decoded.email,
-      name: decoded.name,
     };
   }
 
   // Decodifica e verifica token, retornando claims mapeadas
   static async decodeAndVerify(token: string, mapClaims: (decoded: any) => any) {
     const userPoolId = process.env.COGNITO_POOL_ID || "";
-    const region = process.env.COGNITO_REGION || "us-east-1";
+    const region = process.env.AWS_REGION || "us-east-1";
 
     const header = JwtService.decodeTokenHeader(token);
     const pem = await JwtService.getPemForToken(header, userPoolId, region);

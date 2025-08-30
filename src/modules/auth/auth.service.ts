@@ -6,15 +6,18 @@ import { JwtService } from "../../common/services/jwt.service";
 
 import { ResolveChallengePasswordRequiredDto } from "./dto/resolve-challenge-password-required.dto";
 import { AuthDto } from "./dto/auth.dto";
+import { CognitoService } from "../../common/services/cognito.service";
 
 export class AuthService {
   private client: CognitoIdentityProviderClient;
   private clientId: string;
   private clientSecret: string;
   private userService: UserService;
+  private cognitoService: CognitoService;
 
   constructor() {
-    this.userService = new UserService();
+    this.cognitoService = new CognitoService();
+    this.userService = new UserService(this.cognitoService);
 
     this.client = new CognitoIdentityProviderClient({
       region: 'us-east-1',

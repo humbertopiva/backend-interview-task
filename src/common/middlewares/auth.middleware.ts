@@ -1,5 +1,10 @@
 import { Context, Next } from "koa";
 import { JwtService } from "../services/jwt.service";
+import { UserService } from "../../modules/user/user.service";
+import { CognitoService } from "../services/cognito.service";
+
+const cognitoService = new CognitoService();
+const userService = new UserService(cognitoService);
 
 export function jwtAuthMiddleware(allowedRoles: string[] = []) {
   
@@ -16,7 +21,18 @@ export function jwtAuthMiddleware(allowedRoles: string[] = []) {
 
       const user = { ...accessClaims, ...idClaims };
 
-      if (allowedRoles.length && !user.groups.some((role: string) => allowedRoles.includes(role))) {
+      const findedUser = await userService.findOneByEmail(user.email);
+
+      if(!findedUser) {
+        ctx.throw(401, "Usuário não encontrado");
+      }
+      
+      user.role = findedUser.role;
+      user.isOnboarded = findedUser.isOnboarded;
+      user.id = findedUser.id;
+      user.name = findedUser.name;
+ 
+      if (allowedRoles.length && allowedRoles.includes(user.role) === false) {
         ctx.throw(403, "Acesso negado");
       }
 
