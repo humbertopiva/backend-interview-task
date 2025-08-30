@@ -11,3 +11,4 @@ logs/
 # Build artifacts
 dist/
 build/
+coverage/
