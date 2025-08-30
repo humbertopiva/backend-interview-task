@@ -15,11 +15,11 @@ export class UserService {
     this.cognitoService = cognitoService;
   }
 
-  async findAll(): Promise<User[] | null> {
+  async findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
-  async getSelf(loggedUser: LoggedUser): Promise<User | null> {
+  async getSelf(loggedUser: LoggedUser): Promise<User> {
     const user = await this.findOneByEmail(loggedUser.email);
     
     if (!user) {
@@ -36,7 +36,7 @@ export class UserService {
     } });
   }
 
-  async create(dto: CreateUserDto): Promise<User | null> {
+  async create(dto: CreateUserDto): Promise<User> {
     const userDto = Object.assign(new CreateUserDto(), dto);
 
     await validateOrReject(userDto);
@@ -48,14 +48,14 @@ export class UserService {
     const user = this.userRepository.create({
       name: dto.name,
       email: dto.email,
-      role: dto.role ?? 'user',
+      role: dto.role,
       isOnboarded: dto.isOnboarded ?? false,
     });
 
     return await this.userRepository.save(user);
   }
 
-  async editAccount(dto: EditUserDto, loggedUser: LoggedUser): Promise<User | null> {
+  async editAccount(dto: EditUserDto, loggedUser: LoggedUser): Promise<User> {
     const userDto = Object.assign(new EditUserDto(), dto);
     await validateOrReject(userDto);
 
@@ -79,8 +79,6 @@ export class UserService {
     if(dto.name !== undefined) {
       user.name = dto.name;
       user.isOnboarded = true
-
-      await this.cognitoService.updateUserName(user.email, dto.name);
     }
 
     const updatedUser = await this.userRepository.save(user);

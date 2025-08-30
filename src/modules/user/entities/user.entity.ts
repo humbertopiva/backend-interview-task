@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
-import { IsEmail, IsEnum, IsBoolean, Length } from 'class-validator';
+import { IsEmail, IsEnum, IsBoolean, Length, IsOptional } from 'class-validator';
 
 export type UserRole = 'admin' | 'user';
 
@@ -15,9 +15,10 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   @Length(2, 100, { message: 'Name must be between 2 and 100 characters' })
-  name!: string;
+  @IsOptional()
+  name?: string;
 
   @Column({ type: 'varchar', length: 150, unique: true })
   @IsEmail({}, { message: 'Invalid email' })
